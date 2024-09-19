@@ -9,8 +9,11 @@ public class Main {
             File fIle = new File(path);
             boolean fileExists = fIle.exists();
             boolean isDirectory = fIle.isDirectory();
-            if (!fileExists || isDirectory) System.out.println("Указанный файл не существует или " +
-                    "указанный путь является путём к папке, а не к файлу");
+            if (!fileExists || isDirectory){
+                System.out.println("Указанный файл не существует или " +
+                        "указанный путь является путём к папке, а не к файлу");
+                continue;
+            }
             else{
                 count++;
                 System.out.println("Путь указан верно");
