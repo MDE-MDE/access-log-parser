@@ -25,20 +25,15 @@ public class Main {
                     BufferedReader reader =
                             new BufferedReader(fileReader);
                     String line;
-                    Statistics statistics = new Statistics();
-                    while ((line = reader.readLine()) != null) {
-                        LogEntry logEntry = new LogEntry(line);
-                        statistics.addEntyty(logEntry);
-                    }
-                    System.out.println("Объем часового трафика: " + statistics.getTrafficRate());
-
-                    /*
                     int amountLine = 0, yndexBotCount = 0, googleBotCount = 0;
+                    Statistics statistics = new Statistics();
                     while ((line = reader.readLine()) != null) {
                         int length = line.length();
                         if(length > 1024) throw new LengthException("Завершение подсчета кол-ва строк в файле. " +
                                 "Строка длиннее 1024 символов.");
                         amountLine++;
+                        LogEntry logEntry = new LogEntry(line);
+                        statistics.addEntyty(logEntry);
                         if (!line.contains("YandexBot") && !line.contains("Googlebot")) continue;
                         String userAgent = line.substring(line.indexOf("compatible"), line.length()-1);
                         String[] parts = userAgent.split(";");
@@ -53,7 +48,7 @@ public class Main {
                             + (double)yndexBotCount/amountLine * 100);
                     System.out.println("Доля запросов от Googlebot относительно общего числа запросов: "
                             + (double)googleBotCount/amountLine * 100);
-                     */
+                    System.out.println("Объем часового трафика: " + statistics.getTrafficRate());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
