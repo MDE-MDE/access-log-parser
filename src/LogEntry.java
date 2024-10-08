@@ -30,7 +30,6 @@ public class LogEntry {
     }
 
     private String parseIpAddress(String line) {
-        //System.out.println(line.substring(0, line.indexOf(" ")));
         return line.substring(0, line.indexOf(" "));
     }
 
@@ -42,31 +41,26 @@ public class LogEntry {
     }
 
     private String parseMethod(String line) {
-        //System.out.println(line.substring(line.indexOf('"') + 1, line.indexOf(" /")));
         return line.substring(line.indexOf("\"") + 1, line.indexOf(" /"));
     }
 
     private String parsePath(String line) {
-        //System.out.println(line.substring(line.indexOf(" /") + 1, line.indexOf(" HTTP/")));
         return line.substring(line.indexOf(" /") + 1, line.indexOf(" HTTP/"));
     }
 
     private int parseResponseCode(String line) {
         String[] parts = line.split(" ");
-        //System.out.println(Integer.parseInt(parts[8]));
         return Integer.parseInt(parts[8]);
     }
 
     private int parseResponseSize(String line) {
         String[] parts = line.split(" ");
-        //System.out.println(Integer.parseInt(parts[9]));
         return Integer.parseInt(parts[9]);
     }
 
     private String parseReferer(String line) {
         String[] parts = line.split(" ");
         if (parts.length < 12) return "-";
-        //System.out.println(parts[10]);
         return parts[10].replace("\"", "");
     }
 
@@ -74,7 +68,6 @@ public class LogEntry {
         String[] parts = line.split(" ");
         if (parts.length < 12) return "-";
         line = line.substring(0, line.length() - 1);
-        //System.out.println(line.substring(line.lastIndexOf('\"') + 1));
         return line.substring(line.lastIndexOf("\"") + 1);
     }
 

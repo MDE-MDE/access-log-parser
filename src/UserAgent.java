@@ -9,7 +9,7 @@ public class UserAgent {
 
     private String parseOs(String line) {
         if (line.contains("Windows")) return "Windows";
-        if (line.contains("macOS")) return "macOS";
+        if (line.contains("Mac OS")) return "Mac OS";
         if (line.contains("Linux")) return "Linux";
         return "Unknown";
     }

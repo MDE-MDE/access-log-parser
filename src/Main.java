@@ -33,7 +33,7 @@ public class Main {
                                 "Строка длиннее 1024 символов.");
                         amountLine++;
                         LogEntry logEntry = new LogEntry(line);
-                        statistics.addEntyty(logEntry);
+                        statistics.addEntry(logEntry);
                         if (!line.contains("YandexBot") && !line.contains("Googlebot")) continue;
                         String userAgent = line.substring(line.indexOf("compatible"), line.length()-1);
                         String[] parts = userAgent.split(";");
@@ -49,6 +49,8 @@ public class Main {
                     System.out.println("Доля запросов от Googlebot относительно общего числа запросов: "
                             + (double)googleBotCount/amountLine * 100);
                     System.out.println("Объем часового трафика: " + statistics.getTrafficRate());
+                    System.out.println("Список страниц сайта: " + statistics.getListPages());
+                    System.out.println("Статистика операционных систем: " + statistics.getFrequecyOs());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
