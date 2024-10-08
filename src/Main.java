@@ -49,8 +49,10 @@ public class Main {
                     System.out.println("Доля запросов от Googlebot относительно общего числа запросов: "
                             + (double)googleBotCount/amountLine * 100);
                     System.out.println("Объем часового трафика: " + statistics.getTrafficRate());
-                    System.out.println("Список страниц сайта: " + statistics.getListPages());
+                    System.out.println("Список существующих страниц сайта: " + statistics.getExistsListPages());
                     System.out.println("Статистика операционных систем: " + statistics.getFrequecyOs());
+                    System.out.println("Список несуществующих страниц сайта: " + statistics.getNoExistsListPages());
+                    System.out.println("Статистика браузеров: " + statistics.getFrequecyBrowser());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

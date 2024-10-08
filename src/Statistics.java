@@ -10,8 +10,10 @@ public class Statistics {
     long totalTraffic = 0;
     LocalDateTime minTime = LocalDateTime.MAX;
     LocalDateTime maxTime = LocalDateTime.MIN;
-    HashSet<String> listPages = new HashSet<>();
+    HashSet<String> existsListPages = new HashSet<>();
+    HashSet<String> noExistsListPages = new HashSet<>();
     HashMap<String, Integer> frequecyOs = new HashMap<>();
+    HashMap<String, Integer> frequecyBrowser = new HashMap<>();
 
     public Statistics() {
     }
@@ -22,14 +24,23 @@ public class Statistics {
 
         if (logEntry.getTime().isAfter(maxTime)) maxTime = logEntry.getTime();
 
-        if (logEntry.responseCode == 200)
-            listPages.add(logEntry.getReferer());
+        if (logEntry.getResponseCode() == 200)
+            existsListPages.add(logEntry.getReferer());
 
-        String os = logEntry.getUserAgent().os;
+        if (logEntry.getResponseCode() == 404)
+            noExistsListPages.add(logEntry.getReferer());
+
+        String os = logEntry.getUserAgent().getOsType();
         if (!frequecyOs.containsKey(os))
             frequecyOs.put(os, 1);
         else
             frequecyOs.put(os, frequecyOs.get(os) + 1);
+
+        String browser = logEntry.getUserAgent().getBrowserType();
+        if (!frequecyBrowser.containsKey(browser))
+            frequecyBrowser.put(browser, 1);
+        else
+            frequecyBrowser.put(browser, frequecyBrowser.get(browser) + 1);
     }
 
     public double getTrafficRate() {
@@ -37,20 +48,37 @@ public class Statistics {
         return diffHours > 0 ? (double) totalTraffic / diffHours : totalTraffic;
     }
 
-    public Set<String> getListPages() {
-        return new HashSet<>(listPages);
+    public Set<String> getExistsListPages() {
+        return new HashSet<>(existsListPages);
+    }
+
+    public Set<String> getNoExistsListPages() {
+        return new HashSet<>(noExistsListPages);
     }
 
     public Map<String, Double> getFrequecyOs() {
         Map<String, Double> frequecyOsPercent = new HashMap<>();
         int totalCount = 0;
-        for(Map.Entry<String, Integer> map : frequecyOs.entrySet()){
-            totalCount += map.getValue();
+        for (Map.Entry<String, Integer> entry : frequecyOs.entrySet()) {
+            totalCount += entry.getValue();
         }
 
         for (Map.Entry<String, Integer> entry : frequecyOs.entrySet()) {
             frequecyOsPercent.put(entry.getKey(), (double) entry.getValue() / totalCount);
         }
         return frequecyOsPercent;
+    }
+
+    public Map<String, Double> getFrequecyBrowser() {
+        Map<String, Double> frequecyBrPercent = new HashMap<>();
+        int totalCount = 0;
+        for (Map.Entry<String, Integer> entry : frequecyBrowser.entrySet()) {
+            totalCount += entry.getValue();
+        }
+
+        for (Map.Entry<String, Integer> entry : frequecyBrowser.entrySet()) {
+            frequecyBrPercent.put(entry.getKey(), (double) entry.getValue() / totalCount);
+        }
+        return frequecyBrPercent;
     }
 }
