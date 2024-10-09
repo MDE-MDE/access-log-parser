@@ -1,3 +1,5 @@
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,6 +63,7 @@ public class LogEntry {
     private String parseReferer(String line) {
         String[] parts = line.split(" ");
         if (parts.length < 12) return "-";
+        if (line.contains("%3A%2F%2F")) return URLDecoder.decode(parts[10].replace("\"", ""), StandardCharsets.UTF_8);
         return parts[10].replace("\"", "");
     }
 

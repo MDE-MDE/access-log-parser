@@ -17,6 +17,9 @@ public class Statistics {
     int totalVisits = 0;
     int errorResponses = 0;
     HashSet<String> ipAddrs = new HashSet<>();
+    HashMap<Integer, Integer> visitsPerSecond = new HashMap<>();
+    HashSet<String> referer = new HashSet<>();
+    HashMap<String, Integer> visitsPerUser = new HashMap<>();
 
 
     public Statistics() {
@@ -35,24 +38,38 @@ public class Statistics {
             noExistsListPages.add(logEntry.getReferer());
 
         String os = logEntry.getUserAgent().getOsType();
-        if (!frequecyOs.containsKey(os))
+        frequecyOs.put(os, frequecyOs.getOrDefault(os, 0) +1);
+
+        /*if (!frequecyOs.isEmpty())
             frequecyOs.put(os, 1);
         else
             frequecyOs.put(os, frequecyOs.get(os) + 1);
-
+*/
         String browser = logEntry.getUserAgent().getBrowserType();
-        if (!frequecyBrowser.containsKey(browser))
+        frequecyBrowser.put(browser, frequecyBrowser.getOrDefault(browser, 0) +1);
+
+        /*if (!frequecyBrowser.isEmpty())
             frequecyBrowser.put(browser, 1);
         else
             frequecyBrowser.put(browser, frequecyBrowser.get(browser) + 1);
-
+*/
         if (!logEntry.getUserAgent().isBot()) {
             totalVisits++;
             ipAddrs.add(logEntry.getIpAddr());
+            int second = logEntry.getTime().getSecond();
+            visitsPerSecond.put(second, visitsPerSecond.getOrDefault(second, 0) +1);
+            String ip = logEntry.getIpAddr();
+            visitsPerUser.put(ip, visitsPerUser.getOrDefault(ip, 0) +1);
         }
 
         if (logEntry.getResponseCode() >= 400 && logEntry.getResponseCode() < 600) {
             errorResponses++;
+        }
+
+        if (!logEntry.getReferer().equals("-")) {
+            String ref = logEntry.getReferer().split("/")[2];
+            if (ref.contains("&")) referer.add(ref.substring(0,ref.indexOf("&")));
+            else referer.add(ref);
         }
     }
 
@@ -81,6 +98,18 @@ public class Statistics {
 
     public Set<String> getNoExistsListPages() {
         return new HashSet<>(noExistsListPages);
+    }
+
+    public Set<String> getSites() {
+        return new HashSet<>(referer);
+    }
+
+    public Map<Integer, Integer> getVisitsPerSecond() {
+        return new HashMap<>(visitsPerSecond);
+    }
+
+    public Map<String, Integer> getMaxVisitPerUser() {
+        return new HashMap<>(visitsPerUser);
     }
 
     public Map<String, Double> getFrequecyOs() {
