@@ -53,6 +53,9 @@ public class Main {
                     System.out.println("Статистика операционных систем: " + statistics.getFrequecyOs());
                     System.out.println("Список несуществующих страниц сайта: " + statistics.getNoExistsListPages());
                     System.out.println("Статистика браузеров: " + statistics.getFrequecyBrowser());
+                    System.out.println("Cреднее количество посещений сайта за час: " + statistics.getAverageNumberVisitsOfSitePerHour());
+                    System.out.println("Среднее количество ошибочных запросов в час: " + statistics.getAverageNumberErrorRequestPerHour());
+                    System.out.println("Средняя посещаемость одним пользователем: " + statistics.getAverageTrafficPerUser());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

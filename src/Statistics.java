@@ -14,6 +14,10 @@ public class Statistics {
     HashSet<String> noExistsListPages = new HashSet<>();
     HashMap<String, Integer> frequecyOs = new HashMap<>();
     HashMap<String, Integer> frequecyBrowser = new HashMap<>();
+    int totalVisits = 0;
+    int errorResponses = 0;
+    HashSet<String> ipAddrs = new HashSet<>();
+
 
     public Statistics() {
     }
@@ -41,11 +45,34 @@ public class Statistics {
             frequecyBrowser.put(browser, 1);
         else
             frequecyBrowser.put(browser, frequecyBrowser.get(browser) + 1);
+
+        if (!logEntry.getUserAgent().isBot()) {
+            totalVisits++;
+            ipAddrs.add(logEntry.getIpAddr());
+        }
+
+        if (logEntry.getResponseCode() >= 400 && logEntry.getResponseCode() < 600) {
+            errorResponses++;
+        }
     }
 
     public double getTrafficRate() {
         long diffHours = Duration.between(minTime, maxTime).toHours();
         return diffHours > 0 ? (double) totalTraffic / diffHours : totalTraffic;
+    }
+
+    public double getAverageNumberVisitsOfSitePerHour() {
+        long diffHours = Duration.between(minTime, maxTime).toHours();
+        return diffHours > 0 ? (double) totalVisits / diffHours : totalVisits;
+    }
+
+    public double getAverageNumberErrorRequestPerHour() {
+        long diffHours = Duration.between(minTime, maxTime).toHours();
+        return diffHours > 0 ? (double) errorResponses / diffHours : errorResponses;
+    }
+
+    public double getAverageTrafficPerUser() {
+        return !ipAddrs.isEmpty() ? (double) totalVisits / ipAddrs.size() : totalVisits;
     }
 
     public Set<String> getExistsListPages() {
